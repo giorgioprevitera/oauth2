@@ -57,6 +57,9 @@ type Config struct {
 
 	// Scope specifies optional requested permissions.
 	Scopes []string
+
+	// Duration Indicates whether or not your app needs a permanent token
+	Duration string
 }
 
 // A TokenSource is anything that can return a token.
@@ -153,6 +156,7 @@ func (c *Config) AuthCodeURL(state string, opts ...AuthCodeOption) string {
 	v := url.Values{
 		"response_type": {"code"},
 		"client_id":     {c.ClientID},
+		"duration":      {c.Duration},
 	}
 	if c.RedirectURL != "" {
 		v.Set("redirect_uri", c.RedirectURL)
@@ -218,7 +222,6 @@ func (c *Config) Exchange(ctx context.Context, code string, opts ...AuthCodeOpti
 	if c.RedirectURL != "" {
 		v.Set("redirect_uri", c.RedirectURL)
 	}
-	v.Set("duration", "permanent")
 	for _, opt := range opts {
 		opt.setValue(v)
 	}
