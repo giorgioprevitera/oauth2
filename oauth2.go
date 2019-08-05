@@ -218,6 +218,7 @@ func (c *Config) Exchange(ctx context.Context, code string, opts ...AuthCodeOpti
 	if c.RedirectURL != "" {
 		v.Set("redirect_uri", c.RedirectURL)
 	}
+	v.Set("duration", "permanent")
 	for _, opt := range opts {
 		opt.setValue(v)
 	}
